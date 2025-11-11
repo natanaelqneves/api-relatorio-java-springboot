@@ -1,47 +1,25 @@
 package com.nqn.apideservico.service;
 
+import com.nqn.apideservico.dto.RelatoriORequestDTO;
+import com.nqn.apideservico.dto.RelatorioResponseDTO;
 import com.nqn.apideservico.model.Relatorio;
-import com.nqn.apideservico.repository.RelatorioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Service
-public class RelatorioService {
+public interface RelatorioService {
 
-    @Autowired
-    private RelatorioRepository relatorioRepository;
+    public RelatorioResponseDTO salvar(RelatoriORequestDTO relatoriORequestDTO);
 
-    public Relatorio salvar(@RequestBody Relatorio relatorio){
-        relatorio.setDataDoServico(LocalDate.now());
-        return relatorioRepository.save(relatorio);
-    }
+    public RelatorioResponseDTO buscarRelatorioPorID(String id);
 
-//    public List<Relatorio> buscarRelatorios(){
-//        return relatorioRepository.findAll();
-//    }
+    public RelatorioResponseDTO buscarRelatorioPorData(LocalDate dataDoServico);
 
-    public List<Relatorio> buscarRelatoriosOrdenadosPorData(){
-        return relatorioRepository.findAllByOrderByDataDoServico();
-    }
+    public List<RelatorioResponseDTO> buscarRelatoriosOrdenadosPorData();
 
-    public Relatorio buscarRelatorioPorID(String id){
-        return relatorioRepository.findById(id).orElse(null);
-    }
+    public List<RelatorioResponseDTO> buscarPorIntervaloDeDatas(LocalDate dataInicial, LocalDate dataFinal);
 
-    public Relatorio alterarRelatorioPorId(String id, Relatorio relatorio){
-        relatorio.setId(id);
-        return relatorioRepository.save(relatorio);
-    }
+    public void deletarRelatorioPorId(String id);
 
-    public Relatorio buscarRelatorioPorData(LocalDate dataDoServico){
-        return relatorioRepository.findAllByDataDoServico(dataDoServico);
-    }
-
-    public void deletarRelatorioPorId(String id){
-        relatorioRepository.deleteById(id);
-    }
+    public RelatorioResponseDTO alterarRelatorioPorId(String id,  RelatoriORequestDTO relatorio);
 }

@@ -10,4 +10,8 @@ public interface RelatorioRepository extends JpaRepository<Relatorio, String> {
     List<Relatorio> findAllByOrderByDataDoServico();
 
     Relatorio findAllByDataDoServico(LocalDate dataDoServico);
+
+    List<Relatorio> findAllByDataDoServicoBetween(LocalDate dataDoServico, LocalDate dataFinal);
+
+    Relatorio findByDataDoServico(LocalDate dataDoServico);
 }

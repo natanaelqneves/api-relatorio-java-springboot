@@ -1,5 +1,6 @@
 package com.nqn.apideservico.model;
 
+import com.nqn.apideservico.dto.RelatoriORequestDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -17,18 +18,29 @@ public class Relatorio {
     private Integer kmInicial;
     private Integer kmFinal;
     private String avarias;
-    private boolean abastecida;
+    private Boolean abastecida;
 
     public Relatorio() {
     }
 
-    public Relatorio(String id, String placaDaViatura, Integer kmInicial, Integer kmFinal, String avarias, boolean abastecida) {
+    public Relatorio(String id, LocalDate dataDoServico, String placaDaViatura, Integer kmInicial, Integer kmFinal, String avarias, Boolean abastecida) {
         this.id = id;
+        this.dataDoServico = dataDoServico;
         this.placaDaViatura = placaDaViatura;
         this.kmInicial = kmInicial;
         this.kmFinal = kmFinal;
         this.avarias = avarias;
         this.abastecida = abastecida;
+    }
+
+    public Relatorio(RelatoriORequestDTO relatorioDTO) {
+        this.id = id;
+        this.dataDoServico = relatorioDTO.dataDoServico();
+        this.placaDaViatura = relatorioDTO.placaDaViatura();
+        this.kmInicial = relatorioDTO.kmInicial();
+        this.kmFinal = relatorioDTO.kmFinal();
+        this.avarias = relatorioDTO.avarias();
+        this.abastecida = relatorioDTO.abastecida();
     }
 
     public String getId() {
@@ -79,11 +91,11 @@ public class Relatorio {
         this.avarias = avarias;
     }
 
-    public boolean isAbastecida() {
+    public Boolean isAbastecida() {
         return abastecida;
     }
 
-    public void setAbastecida(boolean abastecida) {
+    public void setAbastecida(Boolean abastecida) {
         this.abastecida = abastecida;
     }
 }

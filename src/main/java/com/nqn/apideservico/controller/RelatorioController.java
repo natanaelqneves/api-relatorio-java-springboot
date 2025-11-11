@@ -1,8 +1,10 @@
 package com.nqn.apideservico.controller;
 
-import com.nqn.apideservico.model.Relatorio;
-import com.nqn.apideservico.service.RelatorioService;
+import com.nqn.apideservico.dto.RelatoriORequestDTO;
+import com.nqn.apideservico.dto.RelatorioResponseDTO;
+import com.nqn.apideservico.service.RelatorioServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -13,35 +15,41 @@ import java.util.List;
 public class RelatorioController {
 
     @Autowired
-    private RelatorioService relatorioService;
+    private RelatorioServiceImpl relatorioService;
 
     @PostMapping
-    public Relatorio salvar(@RequestBody Relatorio relatorio){
-        return relatorioService.salvar(relatorio);
+    public ResponseEntity<RelatorioResponseDTO> salvar(@RequestBody RelatoriORequestDTO dto){
+        RelatorioResponseDTO resposta = relatorioService.salvar(dto);
+        return ResponseEntity.ok(resposta);
     }
 
-//    @GetMapping
-//    public List<Relatorio> buscarRelatorios(){
-//        return relatorioService.buscarRelatorios();
-//    }
-
     @GetMapping
-    public List<Relatorio> buscarRelatorios(){
-        return relatorioService.buscarRelatoriosOrdenadosPorData();
+    public ResponseEntity<List<RelatorioResponseDTO>> buscarRelatorios(){
+        List<RelatorioResponseDTO> resposta = relatorioService.buscarRelatoriosOrdenadosPorData();
+        return ResponseEntity.ok(resposta);
     }
 
     @GetMapping("{id}")
-    public Relatorio buscarRelatorioPorId(@PathVariable String id){
-        return relatorioService.buscarRelatorioPorID(id);
+    public ResponseEntity<RelatorioResponseDTO> buscarRelatorioPorId(@PathVariable String id){
+        RelatorioResponseDTO resposta = relatorioService.buscarRelatorioPorID(id);
+        return ResponseEntity.ok(resposta);
     }
 
     @PutMapping("{id}")
-    public Relatorio alterarRelatorioPorId(@PathVariable("id") String id, @RequestBody Relatorio relatorio){
-        return relatorioService.alterarRelatorioPorId(id, relatorio);
+    public ResponseEntity<RelatorioResponseDTO> alterarRelatorioPorId(@PathVariable("id") String id, @RequestBody RelatoriORequestDTO dto){
+        RelatorioResponseDTO resposta = relatorioService.alterarRelatorioPorId(id, dto);
+        return ResponseEntity.ok(resposta);
     }
 
     @GetMapping("data/{dataDoServico}")
-    public Relatorio buscarRelatorioPorDataDoServico(@PathVariable("dataDoServico") LocalDate dataDoServico){
-        return relatorioService.buscarRelatorioPorData(dataDoServico);
+    public ResponseEntity<RelatorioResponseDTO> buscarRelatorioPorDataDoServico(@PathVariable("dataDoServico") LocalDate dataDoServico){
+        RelatorioResponseDTO resposta = relatorioService.buscarRelatorioPorData(dataDoServico);
+        return ResponseEntity.ok(resposta);
+    }
+
+    @GetMapping("data/{dataInicial}/{dataFinal}")
+    public List<RelatorioResponseDTO> buscarRelatorioPorDataDoServico(@PathVariable("dataInicial") LocalDate dataInicial, @PathVariable("dataFinal") LocalDate dataFinal){
+        List<RelatorioResponseDTO> resposta =  relatorioService.buscarPorIntervaloDeDatas(dataInicial, dataFinal);
+        return ResponseEntity.ok(resposta).getBody();
     }
 }
