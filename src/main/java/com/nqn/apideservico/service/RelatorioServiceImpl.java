@@ -4,13 +4,11 @@ import com.nqn.apideservico.dto.RelatoriORequestDTO;
 import com.nqn.apideservico.dto.RelatorioResponseDTO;
 import com.nqn.apideservico.model.Relatorio;
 import com.nqn.apideservico.repository.RelatorioRepository;
-import org.apache.logging.log4j.util.PropertySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,10 +30,11 @@ public class RelatorioServiceImpl implements RelatorioService {
 
     @Override
     public RelatorioResponseDTO buscarRelatorioPorID(String id) {
-        Relatorio relatorio = repository.findById(id).orElse(null);
-        return new RelatorioResponseDTO(relatorio.getId(), relatorio.getDataDoServico(), relatorio.getPlacaDaViatura(), relatorio.getKmInicial(),
-                relatorio.getKmFinal(), relatorio.getAvarias(), relatorio.isAbastecida());
+        Relatorio relatorioEncontrado = repository.findById(id).orElseThrow();
+
+        return toRelatorioResponseDTO(relatorioEncontrado);
     }
+
 
     @Override
     public RelatorioResponseDTO buscarRelatorioPorData(LocalDate dataDoServico) {
@@ -58,18 +57,11 @@ public class RelatorioServiceImpl implements RelatorioService {
     @Override
     public List<RelatorioResponseDTO> buscarPorIntervaloDeDatas(LocalDate dataInicial, LocalDate dataFinal) {
         List<Relatorio> relatorios = repository.findAllByDataDoServicoBetween(dataInicial, dataFinal);
-        List<RelatorioResponseDTO> relatoriosDTO = relatorios.stream()
+
+        return relatorios.stream()
                 .sorted(Comparator.comparing(Relatorio::getDataDoServico))
-                .map(r -> new RelatorioResponseDTO(
-                        r.getId(),
-                        r.getDataDoServico(),
-                        r.getPlacaDaViatura(),
-                        r.getKmInicial(),
-                        r.getKmFinal(),
-                        r.getAvarias(),
-                        r.isAbastecida()))
+                .map(this::toRelatorioResponseDTO)
                 .collect(Collectors.toList());
-        return relatoriosDTO;
     }
 
     @Override
@@ -84,10 +76,18 @@ public class RelatorioServiceImpl implements RelatorioService {
         relatorioAlterado.setId(relatorio.getId());
         relatorioAlterado.setDataDoServico(relatorio.getDataDoServico());
         repository.save(relatorioAlterado);
-        RelatorioResponseDTO resposta = new RelatorioResponseDTO(relatorioAlterado.getId(), relatorioAlterado.getDataDoServico(), relatorioAlterado.getPlacaDaViatura(), relatorioAlterado.getKmInicial(),
-                relatorioAlterado.getKmFinal(), relatorioAlterado.getAvarias(), relatorioAlterado.isAbastecida());
+        RelatorioResponseDTO resposta = toRelatorioResponseDTO(relatorioAlterado);
         return resposta;
     }
+
+    private RelatorioResponseDTO toRelatorioResponseDTO(Relatorio relatorio) {
+        return new RelatorioResponseDTO(
+                relatorio.getId(),
+                relatorio.getDataDoServico(),
+                relatorio.getPlacaDaViatura(),
+                relatorio.getKmInicial(),
+                relatorio.getKmFinal(),
+                relatorio.getAvarias(),
+                relatorio.isAbastecida());
+    }
 }
-
-

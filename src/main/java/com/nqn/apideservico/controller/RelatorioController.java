@@ -49,10 +49,17 @@ public class RelatorioController {
         return ResponseEntity.ok(resposta);
     }
 
-    @GetMapping("data/{dataInicial}/{dataFinal}")
-    public List<RelatorioResponseDTO> buscarRelatorioPorDataDoServico(@PathVariable("dataInicial") LocalDate dataInicial, @PathVariable("dataFinal") LocalDate dataFinal){
-        List<RelatorioResponseDTO> resposta =  relatorioService.buscarPorIntervaloDeDatas(dataInicial, dataFinal);
-        return ResponseEntity.ok(resposta).getBody();
+    @GetMapping("data")
+    public ResponseEntity<List<RelatorioResponseDTO>> buscarRelatorioPorDataDoServico(
+            @RequestParam(value = "dataInicial", required = false) LocalDate dataInicial,
+            @RequestParam(value = "dataInicial", required = false) LocalDate dataFinal){
+
+            if(dataInicial != null && dataFinal != null){
+                List<RelatorioResponseDTO> resposta =  relatorioService.buscarPorIntervaloDeDatas(dataInicial, dataFinal);
+                return ResponseEntity.ok(resposta);
+            }
+        List<RelatorioResponseDTO> resposta = relatorioService.buscarRelatoriosOrdenadosPorData();
+        return ResponseEntity.ok(resposta);
     }
 
     @DeleteMapping("{id}")
