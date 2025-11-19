@@ -20,6 +20,9 @@ public class Relatorio {
     private Integer kmFinal;
     private String avarias;
     private Boolean abastecida;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
     public Relatorio() {
     }
@@ -94,7 +97,15 @@ public class Relatorio {
         this.abastecida = abastecida;
     }
 
-//    @Override
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    //    @Override
 //    public boolean equals(Object o) {
 //        if (o == null || getClass() != o.getClass()) return false;
 //        Relatorio relatorio = (Relatorio) o;

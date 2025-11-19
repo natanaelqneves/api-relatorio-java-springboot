@@ -1,5 +1,7 @@
 package com.nqn.apideservico.dto;
 
+import com.nqn.apideservico.model.Usuario;
+
 import java.time.LocalDate;
 
 public record RelatorioResponseDTO(String id,
@@ -8,7 +10,5 @@ public record RelatorioResponseDTO(String id,
                                    Integer kmInicial,
                                    Integer kmFinal,
                                    String avarias,
-                                   Boolean abastecida) {
-
-
-}
+                                   Boolean abastecida
+) {}
