@@ -3,7 +3,6 @@ spring:
     name: API de Servico
 
   datasource:
-    # URL de conexão com o PostgreSQL.
     url: jdbc:postgresql://localhost:5432/relatorios_de_servicos
     username: postgres
     password: 984324
@@ -11,15 +10,11 @@ spring:
 
   jpa:
     hibernate:
-      # O Hibernate irá tentar atualizar o esquema do banco de dados automaticamente
       ddl-auto: update
     properties:
       hibernate:
-        # Dialeto específico para o PostgreSQL
         dialect: org.hibernate.dialect.PostgreSQLDialect
-    # Para ver as queries SQL geradas no console (útil em dev)
     show-sql: true
-    # Para formatar as queries SQL (útil em dev)
     format_sql: true
 
 

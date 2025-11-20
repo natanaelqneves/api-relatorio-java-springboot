@@ -2,7 +2,7 @@ package com.nqn.apideservico.controller;
 
 import com.nqn.apideservico.dto.RelatoriORequestDTO;
 import com.nqn.apideservico.dto.RelatorioResponseDTO;
-import com.nqn.apideservico.service.RelatorioServiceImpl;
+import com.nqn.apideservico.service.RelatorioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +17,9 @@ import java.util.List;
 @RequestMapping("relatorio")
 public class RelatorioController {
 
-    private final RelatorioServiceImpl relatorioService;
+    private final RelatorioService relatorioService;
 
-    public RelatorioController(RelatorioServiceImpl relatorioService) {
+    public RelatorioController(RelatorioService relatorioService) {
         this.relatorioService = relatorioService;
     }
 
